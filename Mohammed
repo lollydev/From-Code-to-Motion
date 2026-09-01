@@ -1,5 +1,20 @@
 //Mohammed
 
+int ledPin = 13;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // تشغيل LED
+  digitalWrite(ledPin, HIGH);
+  delay(1000);
+
+  // إطفاء LED
+  digitalWrite(ledPin, LOW);
+  delay(1000);
+}
 
 
 
