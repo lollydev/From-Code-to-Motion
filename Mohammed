@@ -1,0 +1,68 @@
+#include <Servo.h>
+
+#define TRIG_PIN 9
+#define ECHO_PIN 10
+
+Servo leftServo;
+Servo rightServo;
+
+int safeDistance = 20;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+
+  leftServo.attach(6);
+  rightServo.attach(5);
+}
+
+void loop() {
+
+  // Send ultrasonic pulse
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  // Measure echo time
+  long duration = pulseIn(ECHO_PIN, HIGH);
+
+  // Calculate distance
+  float distance = duration * 0.034 / 2;
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Decision
+  if (distance > safeDistance) {
+    moveForward();
+  } else {
+    stopRobot();
+    delay(500);
+
+    turnRight();
+    delay(700);
+  }
+
+  delay(100);
+}
+
+void moveForward() {
+  leftServo.write(180);
+  rightServo.write(0);
+}
+
+void stopRobot() {
+  leftServo.write(90);
+  rightServo.write(90);
+}
+
+void turnRight() {
+  leftServo.write(180);
+  rightServo.write(180);
+}
