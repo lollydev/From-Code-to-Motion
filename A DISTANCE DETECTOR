@@ -1,0 +1,46 @@
+// BUILD A DISTANCE DETECTOR
+const int trigPin = 9;
+const int echoPin = 10;
+
+long duration;
+int distance;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  // Send a short ultrasonic pulse
+  digitalWrite(trigPin, LOW); //OFF
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH); //ON
+  delayMicroseconds(10);
+
+  digitalWrite(trigPin, LOW); //OFF
+
+  // Measure the returning signal
+  duration = pulseIn(echoPin, HIGH);
+
+  // Calculate distance in centimeters
+  distance = duration * 0.034 / 2;
+
+  // Show the distance
+  Serial.print("Distance = ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Make a decision
+  if (distance < 20) {
+    Serial.println("TOO CLOSE!");
+  } 
+  else {
+    Serial.println("SAFE!");
+  }
+
+  delay(1000);
+}
